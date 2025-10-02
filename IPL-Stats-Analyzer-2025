@@ -1,0 +1,205 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+df = pd.read_csv("C:\\Users\\DELL\\Downloads\\IPL2025Batters.csv")
+
+
+top10 = df.sort_values(by="Runs", ascending=False).head(10)
+print("\n======= Top 10 Scorers: ========\n")
+for i, row in top10.iterrows():
+    print(f"{i+1}. {row['Player Name']} - {row['Runs']} Runs for {row['Team']} in {row['Matches']} Matches")
+
+
+
+df['AVG'] = pd.to_numeric(df['AVG'],errors='coerce')
+avg5 = df.sort_values(by="AVG",ascending=False).head(5)
+print("\n ======= Highest Consistency Players: ========\n")
+for _, row in avg5.iterrows():
+    print(f"{row['Player Name']} With - {row['AVG']} Average")
+
+
+print("\n====== Most Aggressive Players: =======\n")
+eligible_players = df[df['BF'] > 100]
+sr5 = eligible_players.sort_values(by="SR",ascending=False).head(5)
+for _, row in sr5.iterrows():
+    print(f"{row['Player Name']} With - {row['SR']} Strike Rate")
+
+
+print("\n====== Highest Individual Score: ======\n")
+df['HS']=pd.to_numeric(df['HS'],errors='coerce')
+hs3 = df.sort_values(by="HS",ascending=False).head(3)
+for _, row in hs3.iterrows():
+    print(f"{row['Player Name']} With - {row['HS']} Runs")
+
+
+print("\n====== Most Fours: ======\n")
+f4 = df.sort_values(by="4s",ascending=False).head(3)
+for _, row in f4.iterrows():
+    print(f"{row['Player Name']} With - {row['4s']} Fours")
+
+
+print("\n====== Most Sixes: ======\n")
+s6 = df.sort_values(by="6s",ascending=False).head(3)
+for _, row in s6.iterrows():
+    print(f"{row['Player Name']} With - {row['6s']} Sixes")
+
+
+print("\n====== Most Centuries: ======\n")
+c = df.sort_values(by="100s",ascending=False).head(3)
+for _, row in c.iterrows():
+    print(f"{row['Player Name']} With - {row['100s']} Centuries")
+
+
+print("\n====== Most Half-Centuries: ======\n")
+hc = df.sort_values(by="50s",ascending=False).head(3)
+for _, row in hc.iterrows():
+    print(f"{row['Player Name']} With - {row['50s']} Half-Centuries")
+
+
+team_runs=df.groupby('Team')['Runs'].sum().sort_values(ascending=False)
+print("\n====== Team-Wise Total Runs: ======\n")
+print(team_runs)
+
+
+team_AvgSR=df.groupby('Team')['SR'].mean().sort_values(ascending=False)
+print("\n====== Team-wise Average Strike Rate: =======\n")
+print(team_AvgSR)
+
+
+team_Top_Scorer=df.loc[df.groupby('Team')['Runs'].idxmax(),['Team','Player Name','Runs']].reset_index(drop=True)
+print("\n====== Team-Wise Top Scorer: =======")
+print(team_Top_Scorer)
+
+
+df['boundaries']=df['4s']+df['6s']
+team_total_boundaries=df.groupby('Team')['boundaries'].sum().sort_values(ascending=False)
+print("\n====== Team-wise Total Boundaries ======\n")
+print(team_total_boundaries)
+
+
+co = [
+    "#1f77b4",  # Blue
+    "#ff7f0e",  # Orange
+    "#2ca02c",  # Green
+    "#d62728",  # Red
+    "#9467bd",  # Purple
+    "#8c564b",  # Brown
+    "#e377c2",  # Pink
+    "#7f7f7f",  # Gray
+    "#bcbd22",  # Olive
+    "#17becf"   # Cyan
+]
+plt.bar(top10['Player Name'],top10['Runs'],color=co)
+plt.xticks(rotation=50)
+plt.title("Top Run Scorers in Ipl 2025")
+plt.ylabel("Runs")
+plt.xlabel("Players")
+plt.show()
+
+
+plt.barh(avg5['Player Name'],avg5['AVG'],color=co)
+plt.xticks(rotation=0)
+plt.title("Most Consistent Players")
+plt.xlabel("Avgerage")
+plt.ylabel("Players")
+plt.show()
+
+
+plt.bar(sr5['Player Name'],sr5['SR'],color=co)
+plt.xticks(rotation=50)
+plt.title("Most Aggressive Players")
+plt.ylabel("Strike Rate")
+plt.xlabel("Players")
+plt.show()
+
+
+plt.bar(hs3['Player Name'], hs3['HS'], color='skyblue')
+plt.ylabel("Highest Score")
+plt.title("Top 3 Highest Individual Scores")
+plt.show()
+
+
+# plt.bar(f4['Player Name'],f4['4s'],color="y",label="Fours")
+# plt.bar(s6['Player Name'],s6['6s'],color="m",label="sixes")
+# plt.xticks(rotation=45)
+# plt.legend()
+# plt.title("Most 4's And 6's")
+# plt.show()
+
+
+# plt.barh(c['Player Name'],c['100s'],color="y",label="Centuries (100s)")
+# plt.barh(hc['Player Name'],hc['50s'],color="m",label="Half-Centuries (50s)")
+# plt.xticks(rotation=45)
+# plt.legend()
+# plt.title("Players 50's And 100's")
+# plt.show()
+
+
+
+print("\n====== Most Fours & Sixes: ======\n")
+f4 = df.sort_values(by="4s",ascending=False).head(3)
+s6 = df.sort_values(by="6s",ascending=False).head(3)
+
+x = np.arange(len(f4))
+width = 0.35
+
+plt.bar(x - width/2, f4['4s'], width, color="y", label="Fours", edgecolor='black')
+plt.bar(x + width/2, f4['6s'], width, color="m", label="Sixes", edgecolor='black')
+plt.xticks(x, f4['Player Name'], rotation=45)
+plt.legend()
+plt.title("Most 4's And 6's")
+plt.ylabel("Count")
+plt.xlabel("Players")
+plt.tight_layout()
+plt.show()
+
+
+
+print("\n====== Centuries & Half-Centuries: ======\n")
+c = df.sort_values(by="100s",ascending=False).head(3)
+
+y = np.arange(len(c))
+height = 0.35
+
+plt.barh(y - height/2, c['100s'], height, color="y", label="Centuries (100s)", edgecolor='black')
+plt.barh(y + height/2, c['50s'], height, color="m", label="Half-Centuries (50s)", edgecolor='black')
+plt.yticks(y, c['Player Name'])
+plt.legend()
+plt.title("Players 50's And 100's")
+plt.xlabel("Count")
+plt.ylabel("Players")
+plt.tight_layout()
+plt.show()
+
+
+labels = [f"{team} ({runs} Runs)" for team, runs in zip(team_runs.index, team_runs.values)]
+plt.pie(team_runs.values, labels=labels, startangle=90)
+plt.title("Team-wise Total Runs ")
+plt.show()
+
+
+plt.bar(team_AvgSR.index, team_AvgSR.values, color="skyblue")
+plt.xticks(rotation=45)
+plt.ylabel("Average Strike Rate")
+plt.title("Team-wise Average Strike Rate")
+plt.show()
+
+
+plt.bar(team_total_boundaries.index, team_total_boundaries.values, color="skyblue")
+plt.xticks(rotation=45)
+plt.ylabel("Total Boundaries")
+plt.title("Team-wise Total Boundaries")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
