@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import emoji
 df = pd.read_csv("C:\\Users\\DELL\\Downloads\\IPL2025Batters.csv")
 
 
 top10 = df.sort_values(by="Runs", ascending=False).head(10)
-print("\n======= Top 10 Scorers: ========\n")
+print(emoji.emojize("\n======= Top 10 Scorers:cricket_game: ======\n"))
 for i, row in top10.iterrows():
     print(f"{i+1}. {row['Player Name']} - {row['Runs']} Runs for {row['Team']} in {row['Matches']} Matches")
 
@@ -13,67 +14,69 @@ for i, row in top10.iterrows():
 
 df['AVG'] = pd.to_numeric(df['AVG'],errors='coerce')
 avg5 = df.sort_values(by="AVG",ascending=False).head(5)
-print("\n ======= Highest Consistency Players: ========\n")
+print(emoji.emojize("\n ======= Highest Consistency Players:sports_medal: ========\n"))
 for _, row in avg5.iterrows():
     print(f"{row['Player Name']} With - {row['AVG']} Average")
 
 
-print("\n====== Most Aggressive Players: =======\n")
+print(emoji.emojize("\n====== Most Aggressive Players:flexed_biceps: =======\n"))
 eligible_players = df[df['BF'] > 100]
 sr5 = eligible_players.sort_values(by="SR",ascending=False).head(5)
 for _, row in sr5.iterrows():
     print(f"{row['Player Name']} With - {row['SR']} Strike Rate")
 
 
-print("\n====== Highest Individual Score: ======\n")
+print(emoji.emojize("\n====== Highest Individual Score:cricket_game::fire::crown: ======\n"))
 df['HS']=pd.to_numeric(df['HS'],errors='coerce')
 hs3 = df.sort_values(by="HS",ascending=False).head(3)
 for _, row in hs3.iterrows():
     print(f"{row['Player Name']} With - {row['HS']} Runs")
 
 
-print("\n====== Most Fours: ======\n")
+print(emoji.emojize("\n====== Most Fours:collision::cricket_game: ======\n"))
 f4 = df.sort_values(by="4s",ascending=False).head(3)
 for _, row in f4.iterrows():
     print(f"{row['Player Name']} With - {row['4s']} Fours")
 
 
-print("\n====== Most Sixes: ======\n")
+print(emoji.emojize("\n====== Most Sixes:bomb::cricket_game: ======\n"))
 s6 = df.sort_values(by="6s",ascending=False).head(3)
 for _, row in s6.iterrows():
     print(f"{row['Player Name']} With - {row['6s']} Sixes")
 
 
-print("\n====== Most Centuries: ======\n")
+print(emoji.emojize("\n====== Most Centuries:cricket_game::hundred_points: ======\n"))
 c = df.sort_values(by="100s",ascending=False).head(3)
 for _, row in c.iterrows():
     print(f"{row['Player Name']} With - {row['100s']} Centuries")
 
 
-print("\n====== Most Half-Centuries: ======\n")
+print(emoji.emojize("\n====== Most Half-Centuries:cricket_game:5️⃣ 0️⃣ ======\n"))
 hc = df.sort_values(by="50s",ascending=False).head(3)
 for _, row in hc.iterrows():
     print(f"{row['Player Name']} With - {row['50s']} Half-Centuries")
 
 
 team_runs=df.groupby('Team')['Runs'].sum().sort_values(ascending=False)
-print("\n====== Team-Wise Total Runs: ======\n")
+print(emoji.emojize("\n====== Team-Wise Total Runs:cricket_game::bar_chart:  ======\n"))
 print(team_runs)
 
 
 team_AvgSR=df.groupby('Team')['SR'].mean().sort_values(ascending=False)
-print("\n====== Team-wise Average Strike Rate: =======\n")
+import emoji
+
+print(emoji.emojize("\n====== Team-wise Average Strike Rate:high_voltage::cricket_game: =======\n"))
 print(team_AvgSR)
 
 
 team_Top_Scorer=df.loc[df.groupby('Team')['Runs'].idxmax(),['Team','Player Name','Runs']].reset_index(drop=True)
-print("\n====== Team-Wise Top Scorer: =======")
+print(emoji.emojize("\n====== Team-Wise Top Scorer:cricket_game::crown: ======="))
 print(team_Top_Scorer)
 
 
 df['boundaries']=df['4s']+df['6s']
 team_total_boundaries=df.groupby('Team')['boundaries'].sum().sort_values(ascending=False)
-print("\n====== Team-wise Total Boundaries ======\n")
+print(emoji.emojize("\n====== Team-wise Total Boundaries:cricket_game::fire::collision: ======\n"))
 print(team_total_boundaries)
 
 
