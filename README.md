@@ -27,9 +27,4 @@ This project relies on the following open-source Python libraries:
 
 ---
 
-## 📦 How to Run Locally
 
-### 1. Clone the Repository
-```bash
-git clone <your-repository-link>
-cd <your-project-folder-name>
